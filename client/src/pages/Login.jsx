@@ -33,6 +33,7 @@ const Login = () => {
     <div className="auth">
       <h1>Login</h1>
       <form>
+        <label className="loginLabel" htmlFor="username">Username</label>
         <input
           required
           type="text"
@@ -40,6 +41,7 @@ const Login = () => {
           name="username"
           onChange={handleChange}
         />
+        <label className="loginLabel" htmlFor="password">Password</label>
         <input
           required
           type="password"
