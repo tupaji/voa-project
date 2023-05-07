@@ -30,10 +30,7 @@ const Navbar = () => {
           <Link className="link" to="/?cat=parking">
             <h6>Parking</h6>
           </Link>
-          {/* <Link className="link" to="/?cat=food">
-            <h6>FOOD</h6>
-          </Link> */}
-          <span>{currentUser?.username}</span>
+          <span>{currentUser?.lname}</span>
           {currentUser ? (
             <span onClick={logout}>Logout</span>
           ) : (

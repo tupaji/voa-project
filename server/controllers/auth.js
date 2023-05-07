@@ -1,5 +1,7 @@
 import { dbUtil } from "../dbUtil.js";
 import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+
 
 export const register = (req, res) => {
     console.log(req.body);
@@ -44,17 +46,46 @@ export const register = (req, res) => {
                 return res.status(500).json(err);
             }
 
-            return res.status(200).json({ message: "User created" });
+            return res.status(200).json("User created");
         });
-        // generate token
-        // send token to client
     })
 }
 
 export const login = (req, res) => {
-    res.send("register");
+    // check if user exists
+    const q = "SELECT * FROM hzb_visitor WHERE email = ?";
+    dbUtil.query(q, [req.body.email], (err, result) => {
+        if (err) {
+            return res.status(500).json(err.sqlMessage);
+        }
+
+        if (result.length === 0) {
+            return res.status(404).json("User not found!");
+        }
+
+        // check if password is correct
+        const passwordMatch = bcrypt.compareSync(req.body.password, result[0].password);
+        if (!passwordMatch) {
+            return res.status(401).json("Wrong email or password");
+        }
+
+        // generate token
+        const token = jwt.sign({ email: req.body.email }, "secret", { expiresIn: "1h" });
+        const { password, ...other } = result[0];
+
+
+        res.cookie("access_token", token, {
+            httpOnly: true
+        }).status(200).json(other)
+
+    });
+
+
 }
 
 export const logout = (req, res) => {
-    res.send("register");
+    res.clearCookie("access_token", {
+        sameSite: "none",
+        secure: true
+    }).status(200).json("User logged out");
 }

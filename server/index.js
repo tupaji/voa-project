@@ -2,10 +2,12 @@ import express from "express";
 import attractionRouter from "./routes/attraction.js";
 import authRouter from "./routes/auth.js";
 import { dbUtil } from "./dbUtil.js";
+import cookieParser from "cookie-parser";
 
 const app = express();
 
 app.use(express.json());
+app.use(cookieParser());
 app.use("/api/auth", authRouter)
 app.use("/api/attraction", attractionRouter)
 // app.use("/api/attraction", attractionRouter)
@@ -29,6 +31,4 @@ app.get("/zaima", (req, res) => {
 
         return res.status(200).json(result);
     });
-
-    // res.send("buzai");
 })

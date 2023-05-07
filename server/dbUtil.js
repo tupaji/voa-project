@@ -4,5 +4,5 @@ export const dbUtil = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "qhb123321",
-    database: "voa_dev"
+    database: "voa_database"
 })

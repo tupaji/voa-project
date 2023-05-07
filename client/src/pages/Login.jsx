@@ -6,7 +6,7 @@ import { AuthContext } from "../context/authContext";
 
 const Login = () => {
   const [inputs, setInputs] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [err, setError] = useState(null);
@@ -24,6 +24,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(inputs)
+      // const res = await axios.post("/auth/login", inputs);
       navigate("/");
     } catch (err) {
       setError(err.response.data);
@@ -33,12 +34,12 @@ const Login = () => {
     <div className="auth">
       <h1>Login</h1>
       <form>
-        <label className="loginLabel" htmlFor="username">Username</label>
+        <label className="loginLabel" htmlFor="email">Email</label>
         <input
           required
           type="text"
-          placeholder="username"
-          name="username"
+          placeholder="email"
+          name="email"
           onChange={handleChange}
         />
         <label className="loginLabel" htmlFor="password">Password</label>
