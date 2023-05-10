@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import "../style.css"
 
-const Show_update = () => {
+const ShowUpdate = () => {
     const [showItem, setShowItem] = useState({
         name: "",
         description: "",
@@ -15,7 +15,7 @@ const Show_update = () => {
     });
 
     const navigate = useNavigate()
-
+    const [err, setError] = useState(null);
     const location = useLocation()
     const showId = location.pathname.split("/")[2];
 
@@ -25,10 +25,50 @@ const Show_update = () => {
 
     const handleShowUpdateClick = async e => {
         e.preventDefault()
+
+        let errors = {};
+        if (!showItem.name.trim()) {
+            setError('Item name is required');
+            return null;
+        }
+
+        if (!showItem.description.trim()) {
+            setError('Description is required');
+            return null;
+        }
+
+        if (!showItem.type.trim()) {
+            setError('Type is required');
+            return null;
+        }
+
+        if (!showItem.s_time.trim()) {
+            setError('Start time is required');
+            return null;
+        }
+
+        if (!showItem.e_time.trim()) {
+            setError('End time is required');
+            return null;
+        }
+
+        if (!showItem.wchair_access.trim()) {
+            setError('Wheelchair accessibility is required');
+            return null;
+        }else if (showItem.wchair_access != '1' && showItem.wchair_access != '0'){
+            setError('Wheelchair accessibility must be 1 or 0');
+            return null;
+        }
+
+        if (!showItem.price.trim()) {
+            setError('Price is required');
+            return null;
+        }
+
         try {
             await axios.put("/show/" + showId, showItem)
-            console.log(showItem)
-            //navigate("/show")
+            //console.log(showItem)
+            navigate("/show")
         } catch (err) {
             console.log(err)
         }
@@ -49,4 +89,4 @@ const Show_update = () => {
     )
 }
 
-export default Show_update
+export default ShowUpdate

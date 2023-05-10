@@ -3,6 +3,6 @@ import mysql from "mysql";
 export const dbUtil = mysql.createConnection({
     host: "localhost",
     user: "root",
-    password: "qhb123321",
+    password: "48508hbt",
     database: "voa_database"
 })

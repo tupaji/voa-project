@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Attract_add = () => {
+const AttractAdd = () => {
     const [attractItem, setAttractItem] = useState({
         name: "",
         description: "",
@@ -15,13 +15,58 @@ const Attract_add = () => {
     });
 
     const navigate = useNavigate()
-
+    const [err, setError] = useState(null);
     const handleAttractAdd = (e) => {
         setAttractItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleAttractAddClick = async e => {
         e.preventDefault()
+
+        let errors = {};
+        if (!attractItem.name.trim()) {
+            setError('Attraction name is required');
+            return null;
+        }
+
+        if (!attractItem.description.trim()) {
+            setError('Description is required');
+            return null;
+        }
+
+        if (!attractItem.status.trim()) {
+            setError('Status is required');
+            return null;
+        }else if (attractItem.status!= 'Open' && attractItem.status!= 'Closed' && attractItem.status!='Under Maintenance'){
+            setError('Status must be Open or Closed or Under Maintenance');
+            return null;
+        }
+
+        if (!attractItem.cpacity.trim()) {
+            setError('Capacity is required');
+            return null;
+        }
+
+        if (!attractItem.min_height.trim()) {
+            setError('Minimum height is required');
+            return null;
+        }
+
+        if (!attractItem.duration.trim()) {
+            setError('Duration is required');
+            return null;
+        }
+
+        if (!attractItem.type.trim()) {
+            setError('Type is required');
+            return null;
+        }
+
+        if (!attractItem.section.trim()) {
+            setError('Section is required');
+            return null;
+        }
+
         try {
             console.log(attractItem)
             await axios.post("/attraction", attractItem)
@@ -48,4 +93,4 @@ const Attract_add = () => {
     )
 }
 
-export default Attract_add
+export default AttractAdd

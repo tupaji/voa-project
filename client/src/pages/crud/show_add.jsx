@@ -2,7 +2,7 @@ import axios from 'axios';
 import React, { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 
-const Show_add = () => {
+const ShowAdd = () => {
     const [showItem, setShowItem] = useState({
         name: "",
         description: "",
@@ -14,13 +14,53 @@ const Show_add = () => {
     });
 
     const navigate = useNavigate()
-
+    const [err, setError] = useState(null);
     const handleShowAdd = (e) => {
         setShowItem((prev) => ({ ...prev, [e.target.name]: e.target.value }));
     };
 
     const handleShowAddClick = async e => {
         e.preventDefault()
+
+        let errors = {};
+        if (!showItem.name.trim()) {
+            setError('Item name is required');
+            return null;
+        }
+
+        if (!showItem.description.trim()) {
+            setError('Description is required');
+            return null;
+        }
+
+        if (!showItem.type.trim()) {
+            setError('Type is required');
+            return null;
+        }
+
+        if (!showItem.s_time.trim()) {
+            setError('Start time is required');
+            return null;
+        }
+
+        if (!showItem.e_time.trim()) {
+            setError('End time is required');
+            return null;
+        }
+
+        if (!showItem.wchair_access.trim()) {
+            setError('Wheelchair accessibility is required');
+            return null;
+        }else if (showItem.wchair_access != '1' && showItem.wchair_access != '0'){
+            setError('Wheelchair accessibility must be 1 or 0');
+            return null;
+        }
+
+        if (!showItem.price.trim()) {
+            setError('Price is required');
+            return null;
+        }
+
         try {
             await axios.post("/show", showItem)
             //console.log(showItem)
@@ -45,4 +85,4 @@ const Show_add = () => {
     )
 }
 
-export default Show_add
+export default ShowAdd

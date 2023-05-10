@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import "../style.css"
 
-const Attract_update = () => {
+const AttractUpdate = () => {
     const [attractItem, setAttractItem] = useState({
         name: "",
         description: "",
@@ -16,7 +16,7 @@ const Attract_update = () => {
     });
 
     const navigate = useNavigate()
-
+    const [err, setError] = useState(null);
     const location = useLocation()
     const attractId = location.pathname.split("/")[2];
 
@@ -26,6 +26,51 @@ const Attract_update = () => {
 
     const handleAttractUpdateClick = async e => {
         e.preventDefault()
+
+        let errors = {};
+        if (!attractItem.name.trim()) {
+            setError('Attraction name is required');
+            return null;
+        }
+
+        if (!attractItem.description.trim()) {
+            setError('Description is required');
+            return null;
+        }
+
+        if (!attractItem.status.trim()) {
+            setError('Status is required');
+            return null;
+        }else if (attractItem.status!= 'Open' && attractItem.status!= 'Closed' && attractItem.status!='Under Maintenance'){
+            setError('Status must be Open or Closed or Under Maintenance');
+            return null;
+        }
+
+        if (!attractItem.cpacity.trim()) {
+            setError('Capacity is required');
+            return null;
+        }
+
+        if (!attractItem.min_height.trim()) {
+            setError('Minimum height is required');
+            return null;
+        }
+
+        if (!attractItem.duration.trim()) {
+            setError('Duration is required');
+            return null;
+        }
+
+        if (!attractItem.type.trim()) {
+            setError('Type is required');
+            return null;
+        }
+
+        if (!attractItem.section.trim()) {
+            setError('Section is required');
+            return null;
+        }
+
         try {
             await axios.put("/attraction/" + attractId, attractItem)
             navigate("/attraction")
@@ -50,4 +95,4 @@ const Attract_update = () => {
     )
 }
 
-export default Attract_update
+export default AttractUpdate
